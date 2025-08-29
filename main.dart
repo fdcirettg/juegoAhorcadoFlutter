@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:get/get.dart';
 import 'juego_page.dart';
 import 'configuracion_page.dart';
 import 'informacion_page.dart';
+import 'settings_controller.dart';
 
 void main() {  
+  Get.put(SettingsController());
   runApp(const MyApp());
 }
 
@@ -18,14 +21,14 @@ class MyApp extends StatelessWidget {
       routes: [
         GoRoute(path: '/', builder: (context, state) => const MyHomePage(title: 'Juego del Ahorcado')),
         GoRoute(path: '/juego', builder: (context, state) => const JuegoPage()),
-        GoRoute(path: '/configuracion', builder: (context, state) => const ConfiguracionPage()),
+        GoRoute(path: '/configuracion', builder: (context, state) =>  ConfiguracionPage()),
         GoRoute(path: '/informacion', builder: (context, state) => const InformacionPage()),
       ],
     );
     return MaterialApp.router(
       routerConfig: _router,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
       )
     );
   }
@@ -51,7 +54,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -98,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
+            const Text('Bienvenidos/as al juego del Ahorcado'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
