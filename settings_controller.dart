@@ -17,8 +17,8 @@ class SettingsController extends GetxController {
   int getTema() {
     return tema;
   }
-  Image showTemaBackground(double h) {
-    Map<String,String> temaActual = temas[tema];
+  Image showTemaBackground(int index, double h) {
+    Map<String,String> temaActual = temas[index];
     String background = temaActual['background']!; // ! check null
     return Image.asset(background, height:h,);
   }
