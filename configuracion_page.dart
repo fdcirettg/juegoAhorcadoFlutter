@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'settings_controller.dart';
 
-enum TemaJuego { base, futurista }
 List<String> imagenes = ['./../assets/base/background.png','./../assets/futurista/background.png'];
 
 class ConfiguracionPage extends StatefulWidget {
@@ -46,7 +45,7 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
                       _temaSeleccionado = nuevoValor;
                     });
                   },
-                  items: const <DropdownMenuItem<TemaJuego>>[
+                  items:  <DropdownMenuItem<TemaJuego>>[
                     DropdownMenuItem<TemaJuego>(
                       value: TemaJuego.base,
                       child: Text('Base'),
@@ -55,6 +54,10 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
                       value: TemaJuego.futurista,
                       child: Text('Futurista'),
                     ),
+                    DropdownMenuItem<TemaJuego>(
+                      value: TemaJuego.terror,
+                      child: Text('Terror'),
+                    ),
                   ],
                 ),
 ],
@@ -62,8 +65,9 @@ class _ConfiguracionPageState extends State<ConfiguracionPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(imagenes[_temaSeleccionado!.index],
-                height: 100,),
+                //Image.asset(imagenes[_temaSeleccionado!.index],
+                //height: 100,),
+                widget.settingsController.showTemaBackground(_temaSeleccionado!.index,100),
               ]
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center,
