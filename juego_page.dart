@@ -26,7 +26,7 @@ class _JuegoPageState extends State<JuegoPage> {
             ),
             Row(mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   height:300,
                   width:600,
                   child: Stack(
@@ -35,7 +35,7 @@ class _JuegoPageState extends State<JuegoPage> {
                       Positioned(
                         top: widget.settingsController.getTemaTop(6),
                         left: widget.settingsController.getTemaLeft(6),
-                        child:  Container(width:150,
+                        child:  SizedBox(width:150,
                           child: widget.settingsController.showAhorcado(6,350),)
                           ),
                     ],
