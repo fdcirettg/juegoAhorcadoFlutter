@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final GoRouter _router = GoRouter(
+    final GoRouter router = GoRouter(
       routes: [
         GoRoute(path: '/', builder: (context, state) => const MyHomePage(title: 'Juego del Ahorcado')),
         GoRoute(path: '/juego', builder: (context, state) =>  JuegoPage()),
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       ],
     );
     return MaterialApp.router(
-      routerConfig: _router,
+      routerConfig: router,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
       )
@@ -53,18 +53,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final int _counter = 0;
   
-  void _incrementCounter() {
-    setState(() {
+  //void _incrementCounter() {
+  //  setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  //    _counter++;
+  //  });
+  //}
 
   @override
   Widget build(BuildContext context) {
