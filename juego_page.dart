@@ -55,11 +55,42 @@ class _JuegoPageState extends State<JuegoPage> {
     if (input.isEmpty) {
       return;
     }
-    if (input.length == 1) { //input es una letra
+    setState(() {
 
-    } else { //input es una palabra 
-
-    }
+      if (input.length == 1) {
+        //input es una letra
+        if (abc.contains(input)) {
+          abc = abc.replaceAll(input, '*');
+          if (_palabra.contains(input)) {
+            String newEspacios = '';
+            for (int i = 0; i < _palabra.length; i++) {
+              if (_palabra[i] == input) {
+                newEspacios += input + ' '; // '$input '
+              } else {
+                newEspacios += _espacios[i * 2] + ' '; // '$_espacios[i*2] '
+              }
+              
+            }
+            _espacios = newEspacios; // va fuera del ciclo
+          } else {
+            // usuario no atino a la letra
+            _intentos++;
+          }
+        }
+      } else {
+        //input es una palabra
+        if (input == _palabra) {
+          for (int i = 0; i < _palabra.length; i++) {
+            _espacios = '$_palabra[i] '; //_palabra[i] + ' ';
+          }
+          print("Ganaste!");
+        } else {
+          // usuario no atino a la palabra
+          _intentos++;
+        }
+      }
+      _controller.clear();
+    });
   }
 
   void _nuevoJuego() {
@@ -112,7 +143,7 @@ class _JuegoPageState extends State<JuegoPage> {
               children: [
                 //Text('_ _ _ _ _')
                 Text(_espacios),
-                Text(_palabra),
+                //Text(_palabra),
               ],
             ),
             Row(
