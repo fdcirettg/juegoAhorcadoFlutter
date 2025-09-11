@@ -22,8 +22,8 @@ class _JuegoPageState extends State<JuegoPage> {
   int idxpalabra = 0;
   int _intentos = 0;
   final Random _random = Random();
-  String abecedario = "abcdefghijklmnñopqrstuvwxyz";
-  String abc = "";
+  String abcOriginal = 'abcdefghijklmnopqrstuvwxyz';
+  String? abc = "";
 
   @override
   void initState() {
@@ -50,60 +50,92 @@ class _JuegoPageState extends State<JuegoPage> {
     });
   }
 
+  void _nuevoJuego() {
+    setState(() {});
+    idxpalabra = _random.nextInt(palabras.length);
+    _intentos = 0;
+    abc = abcOriginal;
+    _setEspacios();
+  }
+
   void _enviar() {
     String input = _controller.text.toLowerCase();
     if (input.isEmpty) {
       return;
     }
-    setState(() {
 
+    setState(() {
       if (input.length == 1) {
-        //input es una letra
-        if (abc.contains(input)) {
-          abc = abc.replaceAll(input, '*');
+        // Es una letra
+        if (abc!.contains(input)) {
+          abc = abc!.replaceAll(input, '*');
           if (_palabra.contains(input)) {
             String newEspacios = '';
             for (int i = 0; i < _palabra.length; i++) {
               if (_palabra[i] == input) {
-                newEspacios += input + ' '; // '$input '
+                newEspacios += input + ' ';
               } else {
-                newEspacios += _espacios[i * 2] + ' '; // '$_espacios[i*2] '
+                newEspacios += _espacios[i * 2] + ' ';
               }
-              
             }
-            _espacios = newEspacios; // va fuera del ciclo
+            _espacios = newEspacios;
+            if (!_espacios.contains('_')) {
+              _showDialog('¡Ganaste!', '¡Felicidades, adivinaste la palabra!');
+            }
           } else {
-            // usuario no atino a la letra
             _intentos++;
           }
-        }
-      } else {
-        //input es una palabra
-        if (input == _palabra) {
-          for (int i = 0; i < _palabra.length; i++) {
-            _espacios = '$_palabra[i] '; //_palabra[i] + ' ';
-          }
-          print("Ganaste!");
         } else {
-          // usuario no atino a la palabra
           _intentos++;
         }
+      } else {
+        // Es una palabra
+        if (input == _palabra) {
+          _showDialog('¡Ganaste!', '¡Felicidades, adivinaste la palabra!');
+        } else {
+          _intentos++;
+        }
+      }
+
+      if (_intentos >= 6) {
+        _showDialog('¡Perdiste!', 'La palabra era: $_palabra');
       }
       _controller.clear();
     });
   }
 
-  void _nuevoJuego() {
-    setState(() {});
-    idxpalabra = _random.nextInt(palabras.length);
-    abc = abecedario;
-    _intentos = 0;
-    _setEspacios();
+  void _showDialog(String title, String content) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Text(title,
+                    style: const TextStyle(
+                        fontSize: 20, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 10),
+                Text(content),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  child: const Text('Jugar de nuevo'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    _nuevoJuego();
+                  },
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     bool isGameActive = _espacios.isNotEmpty;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Juego')),
       body: Center(
@@ -111,7 +143,7 @@ class _JuegoPageState extends State<JuegoPage> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Text(abc)], //mostrar abecedario
+              children: [Text(abc!)],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -143,7 +175,7 @@ class _JuegoPageState extends State<JuegoPage> {
               children: [
                 //Text('_ _ _ _ _')
                 Text(_espacios),
-                //Text(_palabra),
+                Text(_palabra),
               ],
             ),
             Row(
@@ -156,7 +188,7 @@ class _JuegoPageState extends State<JuegoPage> {
                     enabled: isGameActive,
                     decoration: InputDecoration(
                       labelText: 'Adivina la palabra',
-                      hintText: "Letra o palabra",
+                      hintText: 'Letra o palabra',
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.text,
@@ -165,7 +197,7 @@ class _JuegoPageState extends State<JuegoPage> {
                 ),
                 ElevatedButton(
                   onPressed: isGameActive ? _enviar : null,
-                  child: const Text("Enviar"),
+                  child: const Text('Enviar'),
                 ),
               ],
             ),
